@@ -5,10 +5,14 @@ Usage:
                              [--until YYYY-MM-DD] [--since YYYY-MM-DD] [--top N]
                              [--run-by R1] [--note TEXT]
 
-SOURCE: openalex | semanticscholar | arxiv | europepmc | crossref | doaj
+SOURCE: openalex | semanticscholar | arxiv | europepmc | crossref | doaj   (official APIs)
+        ieee | springer | scholar   (the sites' own web search endpoints, read as a browser would)
 QUERY is passed to the source in its own syntax (see protocol/search_strings.md).
---top caps the export to the first N results by relevance (used for crossref,
-which has no Boolean search).
+--top caps the export to the first N results by relevance (crossref, scholar).
+--prefix restricts crossref to one DOI prefix (10.1016 = Elsevier, 10.1145 = ACM).
+
+The scholar adapter waits 8-15 s between pages and stops at the first CAPTCHA,
+logging whatever was retrieved with a note; it never tries to get past a CAPTCHA.
 
 Writes data/raw_exports/<SEARCH_ID>_<SOURCE>_<date>.raw.json (raw API pages) and
 .csv (flat records), and appends one row to data/search_log.csv.
@@ -18,9 +22,12 @@ Optional environment variables: OPENALEX_MAILTO, OPENALEX_API_KEY, S2_API_KEY.
 import argparse
 import csv
 import datetime as dt
+import html
+import http.cookiejar
 import json
 import os
 import pathlib
+import random
 import re
 import time
 import urllib.error
@@ -207,6 +214,8 @@ def crossref(query, args):
         filt.append(f"from-pub-date:{args.since}")
     if args.until:
         filt.append(f"until-pub-date:{args.until}")
+    if args.prefix:
+        filt.append(f"prefix:{args.prefix}")
     params = {"query.bibliographic": query, "rows": min(args.top, 1000), "sort": "relevance",
               "select": "DOI,title,author,container-title,issued,type,abstract,URL,is-referenced-by-count"}
     if filt:
@@ -252,10 +261,142 @@ def doaj(query, args):
     return total, pages, rows, ""
 
 
+BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+              "(KHTML, like Gecko) Chrome/140.0 Safari/537.36")
+
+
+def strip_tags(text):
+    return html.unescape(re.sub(r"<[^>]+>", " ", text or ""))
+
+
+def first(pattern, text):
+    m = re.search(pattern, text, re.S)
+    return m.group(1) if m else ""
+
+
+def year_ok(year, args):
+    """Client-side date filter for sources whose web search has none."""
+    if not year:
+        return True
+    return (not args.since or year >= args.since[:4]) and (not args.until or year <= args.until[:4])
+
+
+def ieee(query, args):
+    jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    opener.addheaders = [("User-Agent", BROWSER_UA)]
+    opener.open("https://ieeexplore.ieee.org/Xplore/home.jsp", timeout=60).read()
+    pages, rows, page_no, total = [], [], 1, 0
+    body = {"queryText": query, "rowsPerPage": 100, "returnType": "SEARCH"}
+    if args.since or args.until:
+        body["ranges"] = [f"{(args.since or '1800')[:4]}_{(args.until or '2100')[:4]}_Year"]
+    while True:
+        req = urllib.request.Request(
+            "https://ieeexplore.ieee.org/rest/search", data=json.dumps({**body, "pageNumber": page_no}).encode(),
+            headers={"Content-Type": "application/json", "Accept": "application/json",
+                     "Origin": "https://ieeexplore.ieee.org",
+                     "Referer": "https://ieeexplore.ieee.org/search/searchresult.jsp"})
+        page = json.load(opener.open(req, timeout=90))
+        pages.append(page)
+        total = page.get("totalRecords", 0)
+        records = page.get("records") or []
+        for r in records:
+            rows.append(record(
+                source_record_id=r.get("articleNumber"), title=strip_tags(r.get("articleTitle")),
+                authors=";".join(a.get("preferredName", "") for a in r.get("authors") or []),
+                year=r.get("publicationYear"), venue=strip_tags(r.get("publicationTitle")),
+                work_type=r.get("contentType"), doi=r.get("doi"),
+                url="https://ieeexplore.ieee.org" + (r.get("documentLink") or ""),
+                abstract=strip_tags(r.get("abstract")), cited_by_count=r.get("citationCount")))
+        if not records or len(rows) >= total or len(rows) >= args.top:
+            break
+        page_no += 1
+        time.sleep(2)
+    return total, pages, rows, ";".join(body.get("ranges", []))
+
+
+def springer(query, args):
+    pages, rows, page_no, total = [], [], 1, 0
+    while True:
+        url = ("https://link.springer.com/search?" +
+               urllib.parse.urlencode({"new-search": "true", "query": query, "page": page_no}))
+        text = fetch(url, {"User-Agent": BROWSER_UA}, as_json=False, pause=2).decode("utf-8")
+        if "Client Challenge" in text or "search-result-item" not in text and "Showing" not in text:
+            raise SystemExit("SpringerLink served a bot challenge; nothing logged. Search it in a browser instead.")
+        pages.append(text)
+        m = re.search(r"Showing [\d,]+-[\d,]+ of ([\d,]+) results", text)
+        total = int(m.group(1).replace(",", "")) if m else 0
+        items = text.split('data-test="search-result-item"')[1:]
+        for it in items:
+            link = re.search(r'href="(/(?:article|chapter|book|referenceworkentry|protocol)/([^"]+))"', it)
+            year = first(r'data-test="published">[^<]*?(\d{4})', it)
+            if not year_ok(year, args):
+                continue
+            rows.append(record(
+                source_record_id=link.group(2) if link else "",
+                title=strip_tags(first(r'data-test="title">.*?<span>(.*?)</span>', it)),
+                authors=strip_tags(first(r'data-test="authors">(.*?)</span>', it)).replace(", ", ";"),
+                year=year, venue=strip_tags(first(r'data-test="parent"[^>]*>(.*?)</a>', it)),
+                work_type=strip_tags(first(r'class="c-meta__type">(.*?)</span>', it)),
+                doi=link.group(2) if link else "",
+                url="https://link.springer.com" + link.group(1) if link else "",
+                abstract=strip_tags(first(r'data-test="description">(.*?)</div>', it))))
+        if not items or page_no * 20 >= total or len(rows) >= args.top:
+            break
+        page_no += 1
+    return total, pages, rows, "client_year_filter" if (args.since or args.until) else ""
+
+
+def scholar(query, args):
+    pages, rows, start, total, note = [], [], 0, 0, ""
+    params = {"q": query, "hl": "en"}
+    if args.since:
+        params["as_ylo"] = args.since[:4]
+    if args.until:
+        params["as_yhi"] = args.until[:4]
+    while start < args.top:
+        url = "https://scholar.google.com/scholar?" + urllib.parse.urlencode({**params, "start": start})
+        try:
+            text = fetch(url, {"User-Agent": BROWSER_UA}, as_json=False).decode("utf-8", "replace")
+        except SystemExit as e:
+            note = f"stopped at start={start}: {str(e)[:80]}"
+            break
+        if "gs_captcha" in text or "unusual traffic" in text.lower():
+            note = f"stopped by CAPTCHA at start={start}"
+            break
+        pages.append(text)
+        if start == 0:
+            m = re.search(r"About ([\d,]+) results|([\d,]+) results?", text)
+            total = int((m.group(1) or m.group(2)).replace(",", "")) if m else 0
+        blocks = text.split('class="gs_ri"')[1:]
+        for b in blocks:
+            h3 = first(r'(<h3 class="gs_rt".*?</h3>)', b)
+            link = first(r'<a [^>]*href="([^"]+)"', h3)
+            title = strip_tags(re.sub(r'<span class="gs_ct[a-z0-9]*".*?</span>', "", h3, flags=re.S))
+            # Scholar separates authors / venue, year / host with "\xa0- "; \s matches the nbsp.
+            parts = [p.strip() for p in re.split(r"\s+-\s+", strip_tags(first(r'<div class="gs_a">(.*?)</div>', b)))]
+            venue_year = parts[1] if len(parts) > 1 else ""
+            rows.append(record(
+                title=title, authors=parts[0].replace(", ", ";"),
+                year=first(r"((?:19|20)\d{2})", venue_year),
+                venue=re.sub(r",?\s*(19|20)\d{2}$", "", venue_year).strip(" ,"),
+                url=html.unescape(link), work_type="citation" if "[CITATION]" in h3 else "",
+                abstract=strip_tags(first(r'<div class="gs_rs">(.*?)</div>', b))))
+        if len(blocks) < 10:
+            break
+        start += 10
+        time.sleep(random.uniform(8, 15))
+    filters = ";".join(filter(None, [f"top{args.top}", "as_ylo/as_yhi" if (args.since or args.until) else "", note]))
+    return total, pages, rows, filters
+
+
 ADAPTERS = {"openalex": openalex, "semanticscholar": semanticscholar, "arxiv": arxiv,
-            "europepmc": europepmc, "crossref": crossref, "doaj": doaj}
+            "europepmc": europepmc, "crossref": crossref, "doaj": doaj,
+            "ieee": ieee, "springer": springer, "scholar": scholar}
 FIELDS = {"openalex": "title_abstract", "semanticscholar": "title_abstract", "arxiv": "all",
-          "europepmc": "title_abstract", "crossref": "bibliographic", "doaj": "all"}
+          "europepmc": "title_abstract", "crossref": "bibliographic", "doaj": "all",
+          "ieee": "all_metadata", "springer": "full_text", "scholar": "full_text"}
+INTERFACE = {"ieee": "web", "springer": "web", "scholar": "web"}
 
 
 def main():
@@ -267,6 +408,7 @@ def main():
     ap.add_argument("--until", help="publication-date upper bound (search cut-off)")
     ap.add_argument("--since", help="publication-date lower bound (update searches)")
     ap.add_argument("--top", type=int, default=10_000, help="export at most N results")
+    ap.add_argument("--prefix", help="crossref only: restrict to a DOI prefix")
     ap.add_argument("--run-by", default="R1")
     ap.add_argument("--note", default="")
     args = ap.parse_args()
@@ -288,7 +430,7 @@ def main():
         writer.writerows(rows)
     with SEARCH_LOG.open("a", newline="", encoding="utf-8") as f:
         csv.writer(f).writerow([
-            args.search_id, today, args.source, "API", FIELDS[args.source], args.query,
+            args.search_id, today, args.source, INTERFACE.get(args.source, "API"), FIELDS[args.source], args.query,
             filters or "none", total, len(rows), csv_path.relative_to(ROOT).as_posix(),
             args.round, args.run_by, args.note])
     print(f"{args.search_id} {args.source}: {total} hits, {len(rows)} exported -> {csv_path.relative_to(ROOT).as_posix()}")

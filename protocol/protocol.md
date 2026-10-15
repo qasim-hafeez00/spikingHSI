@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| Version | 0.1 (DRAFT, not frozen) |
+| Version | 1.0 (FROZEN) |
 | Date | 2026-10-16 |
-| Status | Pre-pilot. Freeze and tag `protocol-v1.0` after the search pilot (Section 7.4), then register on OSF. |
+| Status | Frozen 2026-10-16 after the search pilot (git tag `protocol-v1.0`). **Search cut-off date: 2026-10-16.** OSF registration pending. Frozen at R1's decision without prior supervisor review; supervisor comments will be handled as amendments. |
 | Reviewers | R1: Muhammad Qasim Hafeez (all stages). Further reviewers to be added; see Section 8.4. |
 | Reporting | PRISMA 2020; PRISMA-S for search reporting |
 | Method guidance | Kitchenham & Charters (2007) SLR guidelines; Wohlin (2014) snowballing guidelines |
@@ -107,7 +107,13 @@ Only free sources are used. No Scopus or Web of Science subscription is availabl
 | D12 | ACM Digital Library | Web advanced search, BibTeX export | Computing venues |
 | — | Citation chasing | OpenAlex / Semantic Scholar references and citations | Backward and forward snowballing |
 
-D4–D7, D11 and D12 block scripted access, so they are searched by hand in a browser and imported with `scripts/import_export.py`.
+Access route per source (fixed at the freeze):
+
+- **D1–D3, D8–D10:** official APIs (`scripts/search.py`).
+- **D4 IEEE Xplore, D6 Google Scholar:** the sites' own web search endpoints, read the way a browser would (`scripts/search.py ieee|scholar`). Google Scholar is paged slowly and the run stops at the first CAPTCHA. No attempt is made to get past a CAPTCHA. If it stops early, the search is finished in Publish or Perish and imported.
+- **D5 ScienceDirect, D7 dblp, D11 SpringerLink, D12 ACM DL:** these sites block non-browser access with a sign-in redirect or a bot challenge. They are searched by hand in a browser and the exports imported (`scripts/import_export.py`), or through a free publisher API key if one is obtained.
+- **Crossref publisher-prefix searches:** run for every one of D5, D11 and D12, regardless of whether the manual search is done. Crossref is searched restricted to each publisher's DOI prefix (10.1016 Elsevier → S05c, 10.1007 Springer → S11c, 10.1145 ACM → S12c), top 100 by relevance.
+- **dblp:** its records are already indexed by OpenAlex and Semantic Scholar. A manual dblp search that is not done is reported as a limitation.
 
 **Limitation to report:** Scopus and WoS were not searched. This is mitigated by OpenAlex's broad coverage, by the publisher databases, by full-text Google Scholar searching, and by exhaustive snowballing. *(Add a citation for an OpenAlex coverage comparison study.)*
 

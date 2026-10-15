@@ -1,4 +1,4 @@
-# Search strings — v0.2 (piloted 2026-10-16; freeze with the protocol)
+# Search strings — v1.0 (FROZEN 2026-10-16 with protocol-v1.0; cut-off date 2026-10-16)
 
 Every executed string is copied verbatim into `data/search_log.csv`. The string in the log, not this file, is the record of what was actually run.
 
@@ -29,7 +29,9 @@ Recall is measured against the 8 independent web-search seeds. "Likely relevant"
 | D8 Europe PMC | 10 | 0/8 | 5 | 0 |
 | D9 Crossref (4 × top 100) | — | 7/8 (P09a, P09b) | 22 | 1 |
 | D10 DOAJ | 14 | 1/8 | 10 | 0 |
-| D4–D7, D11, D12 | manual searches still to be run | | | |
+| D4 IEEE Xplore (web endpoint) | 80 | 3/3 IEEE-published seeds | — | — |
+| D11 SpringerLink | bot challenge (P11 logged as FAILED) | | | |
+| D5, D7, D12 | block non-browser access | | | |
 
 ---
 
@@ -65,6 +67,16 @@ TITLE_ABS:(spiking OR "spike-based" OR "spike-driven" OR "integrate-and-fire" OR
 ```
 (spiking OR "spike-based" OR "spike-driven" OR "integrate-and-fire" OR spikformer OR spikingformer OR SNN OR neuromorphic) AND (hyperspectral OR "hyper-spectral" OR "imaging spectroscopy" OR "imaging spectrometer" OR "spectral imaging")
 ```
+
+### D4 — IEEE Xplore (`ieee`, the site's own web search endpoint; same command-search string as in the manual section below)
+
+### D6 — Google Scholar (`scholar --top 300`, 8–15 s between pages, stops at the first CAPTCHA)
+Same four queries as S06a–S06d in the manual section below. If a run stops early, the log notes it; finish that query in Publish or Perish and import it as `S06x-pop`.
+
+### Crossref publisher-prefix searches (`crossref --top 100 --prefix ...`)
+- S05c `spiking neural network hyperspectral` with `--prefix 10.1016` (Elsevier / ScienceDirect)
+- S11c `spiking neural network hyperspectral` with `--prefix 10.1007` (Springer)
+- S12c `spiking neural network hyperspectral` with `--prefix 10.1145` (ACM)
 
 ---
 

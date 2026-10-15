@@ -15,3 +15,6 @@ Effect on already-processed records:
 - 2026-10-16 — No publication-year lower bound (scoping found no relevant work before 2018).
 - 2026-10-16 — Non-imaging 1-D spectra excluded (E2). Scoping found ~10 SNN-on-spectra papers out of 1,244 noisy hits.
 - 2026-10-16 — Free sources only (no Scopus/WoS access). OpenAlex is the primary database.
+- 2026-10-16 — Seed set built from an independent web-search pass (R1 had no prior papers). Seed recall of the combined pilot: 8/8.
+- 2026-10-16 — Access routes fixed (Protocol §7.1). IEEE Xplore and Google Scholar are read through their web search endpoints. ScienceDirect, SpringerLink, ACM and dblp block non-browser access: they are searched manually, and Crossref publisher-prefix searches are run for them as well.
+- 2026-10-16 — **Protocol frozen** (tag `protocol-v1.0`). Search cut-off date: 2026-10-16.
