@@ -1,0 +1,9 @@
+seed_id,title,doi,year,how_known
+SEED-01,A Spiking Neural Network for Hyperspectral Image Classification,10.1109/icgmrs66001.2025.11064958,2025,web_search_2026-10-16
+SEED-02,Hyperspectral Image Classification Based on Faster Residual Multi-branch Spiking Neural Network,,2024,web_search_2026-10-16
+SEED-03,Boundary-Aware Deformable Spiking Neural Network for Hyperspectral Image Classification,10.3390/rs15205020,2023,web_search_2026-10-16
+SEED-04,Hyperspectral Image Classification of Brain-Inspired Spiking Neural Network Based on Attention Mechanism,,2022,web_search_2026-10-16
+SEED-05,Hyperspectral Image Classification of Brain-Inspired Spiking Neural Network Based on Approximate Derivative Algorithm,,2022,web_search_2026-10-16
+SEED-06,Hyper-S3NN: Spatial–spectral spiking neural network for hyperspectral image classification,,2024,web_search_2026-10-16
+SEED-07,Efficient classification method for hyperspectral images based on spiking neural network,10.1117/1.jrs.18.036509,2024,web_search_2026-10-16
+SEED-08,Small sample hyperspectral image classification based on spiking re-parameterization and multi-discriminator adversarial,,2025,web_search_2026-10-16

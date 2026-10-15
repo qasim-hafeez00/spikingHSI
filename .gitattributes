@@ -1,0 +1,5 @@
+# Store data byte-for-byte: raw exports must never be altered, even by line-ending conversion.
+data/** -text
+output/** -text
+*.py text eol=lf
+*.md text eol=lf
