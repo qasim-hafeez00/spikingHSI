@@ -362,7 +362,10 @@ def scholar(query, args):
             note = f"stopped at start={start}: {str(e)[:80]}"
             break
         if "gs_captcha" in text or "unusual traffic" in text.lower():
-            note = f"stopped by CAPTCHA at start={start}"
+            note = f"PARTIAL: stopped by CAPTCHA at start={start}"
+            break
+        if "can&#39;t perform the operation now" in text or "can't perform the operation now" in text:
+            note = f"PARTIAL: Scholar rate limit ('try again later') at start={start}"
             break
         pages.append(text)
         if start == 0:
@@ -382,9 +385,10 @@ def scholar(query, args):
                 venue=re.sub(r",?\s*(19|20)\d{2}$", "", venue_year).strip(" ,"),
                 url=html.unescape(link), work_type="citation" if "[CITATION]" in h3 else "",
                 abstract=strip_tags(first(r'<div class="gs_rs">(.*?)</div>', b))))
-        if len(blocks) < 10:
-            break
+        # Scholar pages often hold 9 results, so only an empty page or the hit count ends a query.
         start += 10
+        if not blocks or start >= total:
+            break
         time.sleep(random.uniform(8, 15))
     filters = ";".join(filter(None, [f"top{args.top}", "as_ylo/as_yhi" if (args.since or args.until) else "", note]))
     return total, pages, rows, filters

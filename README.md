@@ -29,10 +29,15 @@ output/        generated files (master sheet, PRISMA counts, figures) — never 
 - [x] Scoping search (OpenAlex), recorded in Protocol §7.3
 - [x] Seed set in `data/seeds.csv` (8 papers from an independent web-search pass)
 - [x] Pilot of the scriptable sources: 8/8 seed recall, 577 unique papers, ~40 real candidates (output/pilot/)
-- [ ] Pilot of the manual sources (IEEE, ScienceDirect, PoP/Scholar, dblp, Springer, ACM); search for existing reviews
-- [ ] Freeze protocol (`git tag protocol-v1.0`), register on OSF
-- [ ] Main searches D1–D7 → records.csv → deduplication → master_registry.csv
-- [ ] Title/abstract screening, then intra-rater re-screen after 14 days
+- [x] Search for existing reviews: no SNN × HSI review exists (Protocol §1, amendment A1)
+- [x] Protocol frozen 2026-10-16 (`protocol-v1.0`), search cut-off 2026-10-16
+- [ ] Register the protocol on OSF
+- [x] Main searches, scripted sources: OpenAlex, Semantic Scholar, arXiv, IEEE Xplore, Europe PMC, Crossref (+ Elsevier/Springer/ACM prefixes), DOAJ
+- [~] Google Scholar: partial (rate-limited); finish S06a–d in Publish or Perish and import
+- [ ] Manual browser searches: ScienceDirect S05a/b, dblp S07a–c, SpringerLink S11, ACM S12 (steps in protocol/search_strings.md)
+- [x] Deduplicated: 1,511 records → 1,015 unique papers; 9 fuzzy matches to confirm in deduplication_log.csv
+- [ ] Title/abstract screening: open `output/screening_TA_R1_primary.csv` in Excel, fill in decision / exclusion_code, then `python scripts/screening.py import output/screening_TA_R1_primary.csv`
+- [ ] Intra-rater re-screen after 14 days: `python scripts/screening.py sheet --round rescreen`
 - [ ] Full-text screening (library requests for PDFs)
 - [ ] Snowballing rounds until saturation
 - [ ] Extraction, results, quality appraisal

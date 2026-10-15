@@ -10,6 +10,12 @@ Reason:
 Effect on already-processed records:
 ```
 
+## A1 — 2026-10-16
+Section(s): §1
+Change: The placeholder "(To verify during the pilot: search for existing reviews)" was replaced with the result of that check. No dedicated SNN × HSI or SNN × remote-sensing review was found; the nearest related surveys are named.
+Reason: §7.4 step 4 was completed only after the freeze.
+Effect on already-processed records: none (wording of the rationale only).
+
 ## Pre-freeze decisions (for the record)
 - 2026-10-16 — Conditional Phase 2 (spiking × broader remote sensing) dropped after the scoping search showed sufficient HSI volume (Protocol §5).
 - 2026-10-16 — No publication-year lower bound (scoping found no relevant work before 2018).

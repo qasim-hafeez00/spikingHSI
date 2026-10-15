@@ -73,7 +73,7 @@ def load_records(rounds):
     """All exported records of the selected rounds, in search-log order."""
     out = []
     for log in read(DATA / "search_log.csv"):
-        if log["round"] not in rounds:
+        if log["round"] not in rounds or log["notes"].startswith("FAILED") or "superseded by" in log["notes"]:
             continue
         for n, rec in enumerate(read(ROOT / log["export_file"]), 1):
             rec = {**rec, "rec_id": f"{log['search_id']}-{n:04d}", "search_id": log["search_id"],
@@ -98,10 +98,15 @@ def cluster(records):
         elif len(rec["nt"]) > 20:
             best, best_r = None, 0.0
             for t, cand in by_title.items():
-                if abs(len(t) - len(rec["nt"])) <= 0.2 * len(rec["nt"]):
-                    r = difflib.SequenceMatcher(None, rec["nt"], t).ratio()
-                    if r > best_r:
-                        best, best_r = cand, r
+                if abs(len(t) - len(rec["nt"])) > 0.2 * len(rec["nt"]):
+                    continue
+                sm = difflib.SequenceMatcher(None, rec["nt"], t, autojunk=False)
+                # Cheap upper bounds first; ratio() is only computed for plausible matches.
+                if sm.real_quick_ratio() < FUZZY or sm.quick_ratio() < FUZZY:
+                    continue
+                r = sm.ratio()
+                if r > best_r:
+                    best, best_r = cand, r
             if best_r >= FUZZY:
                 c, m, sim = best, "title_fuzzy", f"{best_r:.3f}"
         if c is None:
