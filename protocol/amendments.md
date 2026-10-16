@@ -32,6 +32,12 @@ Earlier partial Scholar runs (S06a–c, S06a2–c2) are superseded by the comple
 Reason: Full coverage of the planned sources. No challenge was bypassed automatically; every CAPTCHA and bot check was cleared by R1.
 Effect on already-processed records: none screened yet.
 
+## A4 — 2026-10-16
+Section(s): §7.1
+Change: Five Crossref publisher-prefix searches were added (`spiking neural network hyperspectral`, top 100 by relevance, no date filter): SPIE 10.1117 (S13a), Taylor & Francis 10.1080 (S13b), Wiley 10.1002 (S13c), Optica 10.1364 (S13d), MDPI 10.3390 (S13e).
+Reason: These publishers host key HSI and remote-sensing venues (J. Applied Remote Sensing and Proc. SPIE; Int. J. Remote Sensing and Remote Sensing Letters; Remote Sensing / Sensors). Their platforms were not searched directly, and one seed paper is from SPIE.
+Effect on already-processed records: none screened yet.
+
 ## Pre-freeze decisions (for the record)
 - 2026-10-16 — Conditional Phase 2 (spiking × broader remote sensing) dropped after the scoping search showed sufficient HSI volume (Protocol §5).
 - 2026-10-16 — No publication-year lower bound (scoping found no relevant work before 2018).

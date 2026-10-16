@@ -25,3 +25,17 @@ python scripts/search.py crossref S12c 'spiking neural network hyperspectral' --
 # python scripts/search.py scholar S06b 'spiking hyperspectral classification' --top 300 $R
 # python scripts/search.py scholar S06c 'neuromorphic hyperspectral' --top 300 $R
 # python scripts/search.py scholar S06d 'spikformer OR "spike-driven" hyperspectral' --top 300 $R
+
+# Amendment A4: further Crossref publisher-prefix searches (no date filter, see A2)
+python scripts/search.py crossref S13a 'spiking neural network hyperspectral' --top 100 --prefix 10.1117 --round main  # SPIE
+python scripts/search.py crossref S13b 'spiking neural network hyperspectral' --top 100 --prefix 10.1080 --round main  # Taylor & Francis
+python scripts/search.py crossref S13c 'spiking neural network hyperspectral' --top 100 --prefix 10.1002 --round main  # Wiley
+python scripts/search.py crossref S13d 'spiking neural network hyperspectral' --top 100 --prefix 10.1364 --round main  # Optica
+python scripts/search.py crossref S13e 'spiking neural network hyperspectral' --top 100 --prefix 10.3390 --round main  # MDPI
+
+# Amendment A2: S02 and the Crossref searches above were re-run WITHOUT the date filter
+# (S02r, S09ar-S09dr, S05cr, S11cr, S12cr); the filtered runs are superseded in search_log.csv.
+# Amendment A3: browser-based sources
+#   python scripts/browser_search.py --only S05a,S05b,S11,S07a,S07b,S07c      (Playwright Chrome)
+#   ACM S12 and Scholar S06a3-S06d3: R1's Chrome via Claude in Chrome, imported with
+#   python scripts/import_scholar_browser.py D:/Downloads/scholar_S06x3.json
