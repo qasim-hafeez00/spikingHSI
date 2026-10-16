@@ -38,6 +38,21 @@ Change: Five Crossref publisher-prefix searches were added (`spiking neural netw
 Reason: These publishers host key HSI and remote-sensing venues (J. Applied Remote Sensing and Proc. SPIE; Int. J. Remote Sensing and Remote Sensing Letters; Remote Sensing / Sensors). Their platforms were not searched directly, and one seed paper is from SPIE.
 Effect on already-processed records: none screened yet.
 
+## A5 — 2026-10-16
+Section(s): §8.2, §8.3
+Change: AI-assisted pre-screening of titles and abstracts. Suggestions only; R1 makes every screening decision.
+1. **Abstract enrichment.** For records with no or short abstracts (< 300 characters), fuller abstracts were retrieved from OpenAlex (by DOI) and Semantic Scholar (by DOI) into `data/abstract_enrichment.csv`, with source and match recorded. 371 abstracts were added. Title matching for DOI-less records is pending (API limits).
+2. **Rules** (`scripts/prescreen.py`, deterministic): E6 for non-articles by title pattern; E1 when no spiking/neuromorphic term appears; E2 when a spiking term appears but no hyperspectral term. Confidence is "high" on a full abstract and "medium" on a title or snippet only. Validation: a seeded random sample of 60 rule exclusions was read in full, and none was a spiking-HSI paper (0/60; 95% upper bound for the miss rate ≈ 5%).
+3. **LLM reading.** Claude (Anthropic, model claude-opus-5-5) read every record the rules did not settle (337) and scanned the titles of the 395 records excluded by rule E2 on title or snippet only. It gave a suggestion, an exclusion code, a confidence and a one-line reason for each (`data/prescreen_llm.csv`). A reading overrides the rules.
+4. **Use.** The suggestions appear in the screening sheet (`ai_*` columns) but are never imported as decisions. The intra-rater rescreen sheet is generated **without** suggestions, so it stays blind.
+
+Open eligibility questions raised by pre-screening (decide before full text):
+- Do pulse-coupled neural networks (PCNN) and spiking neural P systems meet I1?
+- Does electron energy-loss spectrum imaging count as hyperspectral imaging (I2)?
+
+Reason: Reduce the screening workload (2,115 records) while keeping every decision with R1, with the method reported as an automation tool under PRISMA 2020 item 8.
+Effect on already-processed records: none screened yet.
+
 ## Pre-freeze decisions (for the record)
 - 2026-10-16 — Conditional Phase 2 (spiking × broader remote sensing) dropped after the scoping search showed sufficient HSI volume (Protocol §5).
 - 2026-10-16 — No publication-year lower bound (scoping found no relevant work before 2018).

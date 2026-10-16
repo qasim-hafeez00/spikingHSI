@@ -1,0 +1,359 @@
+paper_id,suggestion,code,confidence,reason
+SH-0001,include,,high,SNN (converted from 3D-CNN) for HSI classification
+SH-0004,include,,high,spike-driven few-shot cross-domain HSI classification
+SH-0005,include,,high,hybrid SNN-Transformer for HSI classification
+SH-0006,exclude,E1,high,"SNNS = Stuttgart Neural Network Simulator; conventional ANN, not spiking"
+SH-0007,maybe,,medium,ACE-SNN 3D image recognition by HYPER-SNN authors; check whether HSI datasets are evaluated
+SH-0008,exclude,E3,medium,event-camera spectroscopy sensor; no spiking model (background set B3)
+SH-0009,include,,high,spike-driven transformer (GS-SpikeFormer) for HSI classification
+SH-0010,exclude,E3,medium,event-based hyperspectral imager (OpenHI); sensor without spiking model (background B3)
+SH-0011,include,,high,SNN with self-attention for HSI classification
+SH-0012,exclude,E1,high,cosmic-ray de-spiking in an imaging spectrometer; not a spiking model
+SH-0014,include,,high,brain-inspired SNN with attention for HSI classification
+SH-0016,include,,high,LIF-based SNN for HSI classification
+SH-0017,include,,high,boundary-aware deformable SNN for HSI classification
+SH-0019,include,,high,faster residual multi-branch SNN for HSI classification
+SH-0020,include,,high,multiscale spiking graph convolution network for HSI classification
+SH-0022,include,,high,SNN-based HSI classification for edge devices
+SH-0023,include,,high,spiking morphological Mamba for HSI classification
+SH-0027,include,,high,SNN for compressive hyperspectral imaging reconstruction (Tier 1B)
+SH-0030,include,,medium,spike encoding + state-space model for HSI classification; confirm spiking neurons in full text
+SH-0031,include,,high,spiking transformer for hyperspectral change detection (Tier 1B)
+SH-0033,include,,high,HSI classification (Salinas-A) on low-power neuromorphic hardware
+SH-0034,exclude,E1,high,cosmic-ray spike removal in hyperspectral imaging; not a spiking model
+SH-0037,include,,high,spectra-spiking neural network for wheat protein regression from HSI (Tier 1B)
+SH-0039,include,,high,brain-inspired SNN with approximate derivative for HSI classification
+SH-0040,include,,high,MambaSNN unsupervised hyperspectral band selection (Tier 1B)
+SH-0041,include,,high,STBP-trained SNN on hyperspectral images of durian (food domain)
+SH-0043,include,,medium,neuromorphic CNN on longwave HSI for contraband classification; confirm spiking implementation
+SH-0053,exclude,E1,high,CNN + genetic algorithm band selection; no spiking model
+SH-0054,include,,high,spiking graph convolution network for HSI classification
+SH-0056,exclude,E1,high,detector readout procedures for an imaging spectrometer; not a spiking model
+SH-0059,maybe,,medium,semantic labeling on spiking neuromorphic hardware (TrueNorth); check whether data are hyperspectral (E2 risk)
+SH-0065,maybe,,low,scoping study of neuromorphic hardware for hyperspectral sensing; check for empirical SNN-on-HSI evaluation (E4 risk)
+SH-0067,exclude,E1,high,"SNN = Siamese neural network, not spiking"
+SH-0068,maybe,,low,spiking VAE on EELS spectrum-imaging data (electron microscopy); borderline whether this counts as hyperspectral imaging
+SH-0071,include,,medium,neuromorphic dual-stage Swin transformer for hyperspectral wetland classification; confirm spiking neurons
+SH-0074,exclude,E1,high,"SNN = subgraph neural network, not spiking"
+SH-0078,include,,high,spiking neural network for multimodal HSI/LiDAR/SAR classification
+SH-0079,exclude,E5,high,review of hyperspectral unmixing methods (secondary study; no spiking focus)
+SH-0080,exclude,E1,high,cosmic spike removal in Raman hyperspectral data; not a spiking model
+SH-0084,exclude,E3,medium,neuromorphic stochastic-logic hardware with No-Prop learning; no spiking model evaluated on HSI
+SH-0085,exclude,E1,high,self-normalizing (SELU) deep networks; not spiking
+SH-0087,exclude,E1,high,hyperspectral detection of phycocyanin; no spiking model
+SH-0089,exclude,E1,high,graph-based semi-supervised HSI classification; no spiking model
+SH-0090,exclude,E3,medium,neuromorphic retinomorphic devices for targeting; device study without spiking model on HSI
+SH-0092,exclude,E1,high,cosmic-ray despiking software for hyperspectral data
+SH-0094,exclude,E3,medium,event camera to deblur snapshot hyperspectral frames; sensor fusion without spiking model
+SH-0104,exclude,E3,medium,talk on electronic-photonic circuits with neuromorphic computing for imaging; no spiking model evaluated on HSI
+SH-0105,exclude,E1,high,hyperspectral coherent diffractive imaging of a material; no spiking model
+SH-0106,exclude,E1,high,machine-learning biomass modelling from airborne HSI; no spiking model
+SH-0107,exclude,E4,medium,conceptual photonic-neuromorphic architecture; no empirical evaluation on HSI
+SH-0110,exclude,E1,high,shallow neural networks with NIR hyperspectral imaging; not spiking
+SH-0117,exclude,E1,medium,tetrachromacy-inspired opponent colour representation for HSI; bio-inspired but not spiking
+SH-0118,exclude,E1,high,machine learning on NIR hyperspectral seed images; no spiking model
+SH-0122,exclude,E1,high,"""spiking"" = sample spiking in soil chemometrics, not a spiking neural network"
+SH-0125,exclude,E1,high,deep neural network retrieval from hyperspectral radiances; not spiking
+SH-0139,exclude,E4,medium,conceptual photonic-neuromorphic-quantum framework; no empirical evaluation on HSI
+SH-0166,exclude,E1,high,"""spiking"" = sample spiking for soil spectroradiometry calibration"
+SH-0169,exclude,E1,high,hyperspectral C-V mapping of ferroelectric domains; no spiking model
+SH-0171,exclude,E1,high,"""LIF"" = laser-induced fluorescence; PCA-SVM, not spiking"
+SH-0175,exclude,E1,high,Kolmogorov-Arnold network on multispectral imagery; not spiking
+SH-0178,exclude,E1,high,endoscopy image classification network; not spiking
+SH-0179,exclude,E1,high,low-rank tensor completion; no spiking model
+SH-0181,exclude,E1,high,vegetation indices from RGB images with ML; no spiking model
+SH-0185,exclude,E1,high,leaf hyperspectral reflectance library for phenotyping; no spiking model
+SH-0187,exclude,E3,medium,photonic neuromorphic sensing-pixel architecture; device study without spiking model on HSI
+SH-0189,exclude,E3,medium,field trial of computational imaging systems incl. neuromorphic cameras; no spiking model on HSI
+SH-0190,exclude,E1,medium,neuro-graph hybrid model for tomato leaf disease; not a spiking model
+SH-0191,exclude,E3,medium,infrared nanoimaging of memristive device materials; no spiking model on HSI
+SH-0198,exclude,E1,high,radiation effects on an imaging-spectrometer detector; no spiking model
+SH-0206,maybe,,medium,2005 spiking-neural-network clustering of remote-sensing data; check whether the data are hyperspectral
+SH-0217,exclude,E3,medium,phase-change materials for optical in-memory computing; device study
+SH-0219,exclude,E1,medium,multimodal ML food-adulteration sensing framework; no spiking model evident
+SH-0225,exclude,E4,medium,system-level concept for an EO satellite constellation; no empirical spiking-HSI evaluation
+SH-0230,exclude,E3,medium,halide perovskite materials study (mentions neuromorphic use); no spiking model on HSI
+SH-0238,exclude,E1,high,soil VNIR-SWIR spectra with semi-supervised learning; no spiking model
+SH-0239,exclude,E1,medium,real-time computer vision for environmental monitoring; no spiking model evident
+SH-0241,exclude,E1,medium,edge-AI robots for rice farming; no spiking model evident
+SH-0242,exclude,E1,high,neuroscience study of biological neural recordings; not a spiking neural network model
+SH-0259,exclude,E1,high,neuroscience study of seizures; not a spiking neural network model
+SH-0274,exclude,E1,high,molecular profiling assay for tumour cells; unrelated
+SH-0280,exclude,E1,medium,UAV damage-assessment framework; no spiking model evident
+SH-0282,exclude,E6,high,edited book / proceedings volume (table of contents)
+SH-0283,exclude,E1,high,nanoparticle toxicity in C. elegans; unrelated
+SH-0286,exclude,E6,high,thesis on pulsed neural networks (ineligible publication type)
+SH-0291,exclude,E1,high,3D hyperspectral imaging with optical microcombs; no spiking model
+SH-0292,exclude,E5,high,review of real-time AI in oncology imaging
+SH-0298,exclude,E2,high,spiking network for panchromatic + multispectral pan-sharpening; not hyperspectral
+SH-0323,exclude,E3,medium,event-camera spectral imaging inspired by cephalopods; sensor without spiking model
+SH-0328,exclude,E3,medium,anomaly detection on event-based vision sensor data; no spiking model
+SH-0332,exclude,E6,high,book of abstracts
+SH-0334,exclude,E6,high,edited book / proceedings volume (table of contents)
+SH-0345,exclude,E1,high,hyperspectral mapping of perovskite photophysics; no spiking model
+SH-0355,exclude,E1,high,hyperspectral fluorescence imaging of petroleum in rock; no spiking model
+SH-0361,exclude,E1,high,cell biology essay; unrelated
+SH-0391,exclude,E2,high,reinforcement learning for SNNs; no hyperspectral data
+SH-0502,exclude,E2,high,SNN for event-based image classification; not hyperspectral
+SH-0557,exclude,E6,high,journal launch editorial
+SH-0572,exclude,E5,high,perspective/review on neuromorphic intelligence foundations
+SH-0611,exclude,E2,medium,memristive spike-driven transformer circuit for heterogeneous data; hyperspectral data not evident
+SH-0919,exclude,E2,high,SNN for audio-visual classification; not hyperspectral
+SH-1658,exclude,E2,high,spiking CNN for video recommendation; not hyperspectral
+SH-1660,exclude,E2,high,memristor SNN for audio learning; not hyperspectral
+SH-1665,exclude,E2,high,memristive SOM-SNN hardware; not hyperspectral
+SH-1669,exclude,E2,high,memristive SNN visual system hardware; not hyperspectral
+SH-1680,exclude,E2,high,memristive neuron for visual-acoustic SNN fusion; not hyperspectral
+SH-1692,exclude,E2,high,memristor for spiking neurons/synapses; not hyperspectral
+SH-1693,exclude,E2,high,memristor-based SNN learning system; not hyperspectral
+SH-1711,exclude,E2,high,fully memristive shallow SNN training; not hyperspectral
+SH-1759,exclude,E2,high,photonic SNN for sound azimuth detection; not hyperspectral
+SH-1775,exclude,E2,high,recurrent SNN on event-camera flow cytometry; not hyperspectral
+SH-1835,exclude,E2,high,benchmarking ANN architectures for SNNs; not hyperspectral
+SH-1844,exclude,E5,high,review of nonvolatile memories in SNN architectures
+SH-1846,exclude,E2,high,event-camera SNN eye tracking; not hyperspectral
+SH-1850,exclude,E2,high,mapping SNNs onto neuromorphic processors; not hyperspectral
+SH-1863,exclude,E2,high,SNN architectures for embedded classification; not hyperspectral
+SH-1870,exclude,E2,high,complex SNN injury resistance; not hyperspectral
+SH-1873,exclude,E2,high,memristor convolutional SNN for edge; not hyperspectral
+SH-1888,exclude,E2,high,SNN for neuromorphic tactile sensing; not hyperspectral
+SH-1895,exclude,E2,high,SNN for odor data classification; not hyperspectral
+SH-1897,exclude,E2,high,SNN for time-series forecasting; not hyperspectral
+SH-1898,exclude,E2,high,SNN for event-based optical flow; not hyperspectral
+SH-1903,exclude,E2,high,SNN for event-based sensor denoising; not hyperspectral
+SH-0003,exclude,E1,high,"SNNS = Stuttgart Neural Network Simulator; conventional ANN, not spiking"
+SH-0013,include,,high,Hyper-S3NN spatial-spectral SNN for HSI classification
+SH-0015,exclude,E3,medium,compressive + neuromorphic (event) sampling hyperspectral camera; sensor without spiking model
+SH-0018,include,,high,Spiking-LSTM (SNN + LSTM) hyperspectral segmentation for Sclerotinia detection
+SH-0026,include,,high,spiking convolutional small-world network for HSI classification
+SH-0032,include,,high,lightweight low-latency SNN with knowledge distillation for HSI classification
+SH-0035,include,,high,spiking re-parameterization for small-sample HSI classification
+SH-0042,include,,high,symbolic spiking Kolmogorov-Arnold network for per-pixel HSI classification
+SH-0129,include,,high,quantum-inspired complex SNN for HSI + LiDAR joint classification (multimodal)
+SH-0211,exclude,E5,medium,overview of AI robotic perception (secondary)
+SH-0218,exclude,E4,medium,case study of Mars rover electronics; no spiking-HSI evaluation
+SH-0221,exclude,E5,high,perspective on future robotics sensors
+SH-0352,include,,medium,"title states SNN-based HSI classification; no year, venue or abstract, so verify the record"
+SH-0892,exclude,E3,medium,analog reservoir computing chip; no spiking model on HSI
+SH-0977,exclude,E5,high,survey of deep-learning change detection
+SH-0985,exclude,E1,high,CNN/transformer for RGB-event video; not spiking
+SH-1007,exclude,E5,high,review of satellite edge AI with large models
+SH-1046,include,,medium,SNN design for on-board methane detection from hyperspectral data (student/conference paper; verify full text)
+SH-1049,exclude,E2,medium,SNN online adaptation for remote-sensing scene classification; hyperspectral only in references
+SH-1051,maybe,,low,optoelectronic neuromorphic vision + multispectral biomedical imaging; unclear whether an SNN is evaluated on spectral images
+SH-1052,exclude,E2,medium,SNN saliency target detection in optical remote-sensing images; not hyperspectral
+SH-1054,exclude,E2,high,SNN for infrared-visible image matching; not hyperspectral
+SH-1058,exclude,E2,high,SNN multimodal identity recognition; not hyperspectral
+SH-1059,exclude,E2,high,convolutional SNN for intrusion detection; not hyperspectral
+SH-1061,exclude,E2,high,lightweight SNN for SAR target recognition; not hyperspectral
+SH-1063,maybe,,medium,SNN lossless image compression on small-satellite edge; check whether hyperspectral images are compressed
+SH-1065,exclude,E2,high,spiking CNN for single-image dehazing; not hyperspectral
+SH-1067,exclude,E2,high,residual SNN out-of-distribution detection; not hyperspectral
+SH-1069,exclude,E2,medium,spiking ViT for on-orbit remote-sensing object recognition; optical imagery
+SH-1072,exclude,E2,high,reservoir SNN for chilli classification from images; not hyperspectral
+SH-1075,maybe,,low,ultra-low-latency SNN for remote-sensing image classification; check whether hyperspectral datasets are used
+SH-1079,exclude,E2,high,deep spiking quantum network for noisy image classification
+SH-1081,maybe,,low,Abisko SNN/materials co-design project; mentions hyperspectral datasets; probably no HSI evaluation (E4 risk)
+SH-1083,exclude,E2,high,SNN for RF fingerprint identification
+SH-1086,maybe,,low,NAS for low-latency SNNs in remote sensing; check whether hyperspectral datasets are used
+SH-1087,maybe,,low,accelerator for spiking deformable CNN; check whether evaluated on hyperspectral classification
+SH-1089,maybe,,low,hybrid spiking/convolutional FPGA architecture; mentions hyperspectral inputs; check evaluation data
+SH-1092,exclude,E2,high,SNN with transfer-learning features; hyperspectral only as future work
+SH-1095,exclude,E5,high,review of SNNs for detection and segmentation
+SH-1098,exclude,E2,high,SNN few-shot learning on natural images
+SH-1102,maybe,,medium,plant disease detection overview with hyperspectral images and a recurrent SNN classifier; check if primary study
+SH-1103,exclude,E1,high,Mamba network for hyperspectral salient object detection; not spiking
+SH-1104,exclude,E2,high,R-STDP SNN for dementia classification
+SH-1106,exclude,E2,medium,SOM + SNN head for waste classification; hyperspectral only in related work
+SH-1107,exclude,E2,high,active transfer learning for SNNs; not hyperspectral
+SH-1108,exclude,E2,high,SNN for neuromorphic vision; not hyperspectral
+SH-1109,exclude,E2,high,SNN for RF fingerprinting on satellites
+SH-1110,maybe,,low,on-chip hyperspectral spectrometer with an on-device SNN mentioned; check whether an SNN is evaluated on HSI
+SH-1111,exclude,E2,high,spiking neural receiver for communications
+SH-1114,exclude,E4,medium,conceptual neuromorphic framework for underwater robotics
+SH-1115,exclude,E2,high,MetaFormer-based SNN activation regulation; not hyperspectral
+SH-1117,exclude,E2,high,SNN algorithm-hardware co-design; not hyperspectral
+SH-1119,exclude,E2,high,SNN semantic segmentation of event streams
+SH-1122,exclude,E2,high,electronic-nose fungicide detection; not hyperspectral
+SH-1123,exclude,E2,medium,ensemble CNN/CSNN image classification; not hyperspectral
+SH-1125,exclude,E6,high,thesis (DNN design for HSI + SNN simulation)
+SH-1126,exclude,E2,high,spiking transformer for aerial scene classification (RGB); hyperspectral as future work
+SH-1127,exclude,E9,high,duplicate record of SH-1089 (same paper with journal citation appended to the title)
+SH-1129,exclude,E1,medium,frequency fusion network for HSI-LiDAR classification; SNNs only in related work
+SH-1130,maybe,,medium,pulse-coupled neural network (PCNN) for hyperspectral sharpening; decide whether PCNN counts as a spiking model (I1)
+SH-1132,maybe,,low,spiking VAE for electron energy-loss spectrum imaging; borderline hyperspectral imaging (see SH-0068)
+SH-1134,exclude,E2,high,input-current generation for spiking neuron model
+SH-1136,maybe,,medium,heterogeneous SNN-ANN fruit-quality framework; check whether hyperspectral data are an input
+SH-1140,maybe,,low,spiking neuron anomaly detection for multi-band bathymetry; probably multispectral (E2 risk)
+SH-1141,exclude,E1,high,Gaussian/Markov random field HSI classification; not spiking
+SH-1142,exclude,E2,medium,recurrent SNN for IoT plant disease detection; image data not hyperspectral
+SH-1143,exclude,E2,high,spike neural network for data-centre traffic
+SH-1144,exclude,E2,high,spiking neuron transistor device
+SH-1146,exclude,E5,medium,perspective on neuromorphic computing and sensing in space
+SH-1147,exclude,E2,high,spiking transformers with time-surface attention (event data)
+SH-1148,exclude,E2,high,adaptive SNN for video streaming QoE
+SH-1149,exclude,E1,high,hierarchical spectral vision transformer for HSI; not spiking
+SH-1151,exclude,E2,medium,binary SNN for tea pest classification from RGB images
+SH-1153,exclude,E1,high,hyperspectral ViTs for on-board processing; not spiking
+SH-1154,exclude,E1,medium,deep learning target detection in polarimetric imaging; SNN only as outlook
+SH-1156,exclude,E2,medium,spiking liquid autoencoder for satellite image retrieval (RGB imagery)
+SH-1157,exclude,E2,high,CNN + SNN for plant disease images (RGB)
+SH-1160,exclude,E2,high,EMG + event-camera fusion benchmark on neuromorphic hardware
+SH-1161,exclude,E1,high,hybrid quantum CNN for topological phases
+SH-1162,exclude,E2,high,aquatic neuromorphic optical flow (event data)
+SH-1163,exclude,E1,high,dual-channel CNN for land-cover classification; not spiking
+SH-1165,exclude,E1,high,ANN/k-means/AdaBoost comparison
+SH-1167,exclude,E2,high,convolutional SNN-optimised antenna design
+SH-1170,exclude,E6,high,proceedings table of contents
+SH-1171,exclude,E4,medium,perspective on AI and neuromorphic computing for deep-space operations
+SH-1173,exclude,E2,high,spiking-wavelet network for 360-degree video enhancement
+SH-1175,maybe,,medium,SNN on Akida for on-board cloud detection; check whether input is hyperspectral or multispectral
+SH-1176,exclude,E3,high,2D-CMOS memristive microchips; device study
+SH-1177,exclude,E4,medium,book chapter on deployment case studies
+SH-1180,exclude,E2,high,CNN + SNN for potato leaf disease (RGB)
+SH-1182,exclude,E1,high,neural network yield prediction from multispectral imagery
+SH-1185,exclude,E2,medium,book chapter on neuromorphic object segmentation; no spiking-HSI evaluation evident
+SH-1187,exclude,E1,high,hierarchical ensemble target recognition
+SH-1188,maybe,,medium,neuromorphic on-board computer for methane detection from SWIR hyperspectral imagery; check for spiking model evaluation
+SH-1190,exclude,E5,high,review of sensors in food quality monitoring
+SH-1192,exclude,E1,high,hyperspectra + GWO-SVR for rice mould
+SH-1196,exclude,E2,medium,modified SNN-GRU for crop yield prediction; image data not hyperspectral
+SH-1197,exclude,E1,high,attention feedforward network for plastics classification
+SH-1199,exclude,E5,medium,overview of neuromorphic CMOS VLSI circuits
+SH-1201,maybe,,low,spiking sparse recovery with non-convex penalties; check whether applied to hyperspectral unmixing
+SH-1203,exclude,E2,high,recurrent network for event-stream super-resolution
+SH-1204,maybe,,low,feedforward pattern recognition with spiking neurons; check whether evaluated on hyperspectral data
+SH-1208,exclude,E1,high,meta-transformer + temporal GNN crop yield prediction
+SH-1211,exclude,E1,high,compact CNN for aerial scene classification
+SH-1215,exclude,E6,high,author profile page
+SH-1217,exclude,E1,high,autapse coupled network for workpiece defects
+SH-1221,exclude,E4,medium,drone technologies network overview
+SH-1224,exclude,E5,high,topical review of neuromorphic computing
+SH-1226,exclude,E2,high,spiking refinement for point-cloud denoising
+SH-1229,exclude,E2,high,FPGA associative memory system
+SH-1233,exclude,E1,high,olfactory-visual model for rice deterioration
+SH-1237,exclude,E5,high,review of brain-inspired learning
+SH-1241,exclude,E2,high,deep spiking residual belief network for injury detection
+SH-1247,exclude,E2,high,spike-driven video transformer for surgical scene segmentation
+SH-1249,exclude,E1,high,lossless compression of remote-sensing images; not spiking
+SH-1253,exclude,E3,high,ferroelectric synaptic transistor device
+SH-1255,exclude,E1,high,ART-based regression model
+SH-1256,exclude,E1,high,HIV disclosure study (mis-indexed record)
+SH-1257,exclude,E2,high,event-to-HDR video reconstruction
+SH-1258,exclude,E6,high,teacher research programme description
+SH-1261,exclude,E5,high,review of deep learning for crop images
+SH-1262,exclude,E6,high,guest editorial
+SH-1273,exclude,E5,high,review of 2D-material neuromorphic devices
+SH-1274,exclude,E1,high,transformer + CNN for passport texture images
+SH-1275,exclude,E1,high,study of visual-attention deep learning models
+SH-1276,exclude,E1,high,image super-resolution for low-quality images
+SH-1277,exclude,E3,medium,optical-field modulation hardware for multispectral image processing
+SH-1281,exclude,E5,high,overview of neural networks in brain informatics
+SH-1319,exclude,E1,high,"""spiking levels"" = toxin-spiked maize samples; FT-NIR spectroscopy"
+SH-1322,exclude,E2,medium,spiking cortical model attention for medical image classification; not hyperspectral
+SH-1323,exclude,E2,high,liquid/spiking network for respiratory signals
+SH-1340,exclude,E1,high,"""spiking"" = spiked polymer samples; NIR-HSI chemometrics"
+SH-1358,maybe,,medium,in-pixel processing of hyperspectral images by the HYPER-SNN group; check whether spiking layers are used
+SH-1366,exclude,E2,high,spiking residual network for 2D-material property prediction
+SH-1412,exclude,E1,high,"""spiking"" = spectral-library spiking in soil vis-NIR calibration"
+SH-1415,exclude,E1,high,"""spiking"" = spiked coffee standards; HSI chemometrics"
+SH-1423,exclude,E1,high,"""spiking"" = aflatoxin-spiked almonds; 3D CNN"
+SH-1429,exclude,E1,high,attention network for HSI classification; spiking only in related work
+SH-1450,exclude,E1,high,meta-ensemble zero-shot HSI classification; spiking only mentioned
+SH-1464,exclude,E1,high,"""spiking"" = spiked almond samples; 3D CNN"
+SH-1467,exclude,E1,high,"""spiking points"" = spectral noise spikes; meat HSI"
+SH-1470,exclude,E1,high,"""spiking"" = spiked oat samples; vis-NIR spectroscopy"
+SH-1639,exclude,E2,high,Rulkov neuron network with memristors (dynamics study)
+SH-1786,exclude,E2,medium,pulse-coupled network preprocessor for image identification; not hyperspectral
+SH-1917,exclude,E3,medium,memristor for all-optical multispectral computing (Indian Pines demo); device without spiking model
+SH-1918,exclude,E3,medium,photonic network laser for neuromorphic vision; no spiking model on HSI
+SH-1919,exclude,E3,medium,event-based sensing for multispectral microparticle classification
+SH-1921,exclude,E3,medium,memristor chip for computational spectrometry; device study
+SH-1929,exclude,E3,medium,broadband sensory networks for neuromorphic vision; device study
+SH-1933,exclude,E3,medium,memristor neuromorphic water-quality modelling; not spiking-HSI
+SH-1936,exclude,E3,medium,1994 neuromorphic infrared focal-plane hardware
+SH-1937,exclude,E2,medium,neuromorphic sensing + temporal networks for plant disease; hyperspectral only as alternative
+SH-1938,exclude,E3,medium,organic reservoir transistor tested on an HSI dataset; not a spiking model
+SH-1940,exclude,E3,medium,neuromorphic (event) cameras for space object classification
+SH-1941,exclude,E3,high,news piece on in-memory spectrometers
+SH-1942,exclude,E3,high,perovskite neuromorphic NIR imaging array (device)
+SH-1944,exclude,E1,high,hyperspectral speckle imaging; no spiking model
+SH-1945,exclude,E3,high,perovskite neuromorphic imaging sensor (device)
+SH-1946,exclude,E3,high,perovskite memory LEDs (device)
+SH-1948,exclude,E1,high,federated learning crop classification
+SH-1954,exclude,E3,medium,introduction of a neuromorphic edge computing system; no spiking-HSI evaluation evident
+SH-1955,exclude,E1,high,ultra-high-speed hyperspectral imaging optics
+SH-1960,maybe,,low,neuromorphic-classical hybrid processing of hyperspectral cubes for AR; check for spiking model and evaluation (venue quality uncertain)
+SH-1964,exclude,E1,high,ion irradiation of TaOx films
+SH-1972,exclude,E5,high,review of hyperspectral imaging in smart cities
+SH-1977,exclude,E5,medium,perspective on neuromorphic sensing for flying robots
+SH-1982,exclude,E5,medium,overview of on-board satellite AI processing
+SH-1983,exclude,E1,high,sliced inverse regression on Mars hyperspectral images
+SH-1988,exclude,E5,high,review of image-sensor chip stacking
+SH-1990,exclude,E1,high,neural pushbroom HSI denoising on satellites; not spiking
+SH-2000,exclude,E3,medium,optoelectronic transistors tested on an HSI image; device without spiking model
+SH-2006,exclude,E5,high,review of edge computing for clinical HSI
+SH-2023,exclude,E1,high,liquid neural network for HSI classification; not spiking
+SH-2025,exclude,E3,high,photodetector device
+SH-2030,exclude,E3,medium,event-based spectroscopy for spectral reconstruction; sensor without spiking model
+SH-2034,exclude,E5,high,review of infrared optoelectronic sensing
+SH-2041,exclude,E5,high,review of photofunctional nanomaterials
+SH-2044,exclude,E3,medium,hyperspectral compute-in-memory opto-electronic architecture; not spiking
+SH-2045,exclude,E3,high,perovskite photodetector fabrication
+SH-2048,exclude,E3,medium,3D silicon photonic circuits; device study
+SH-2050,exclude,E5,high,review of machine vision in Industry 5.0
+SH-2056,exclude,E5,high,feature article on imaging sensors
+SH-2058,exclude,E3,high,printable photodetector networks
+SH-2059,exclude,E3,high,photodetector materials
+SH-2062,exclude,E5,high,review of advanced sensors
+SH-2064,exclude,E3,high,photodetector device
+SH-2065,exclude,E6,high,book index
+SH-2067,exclude,E5,high,review of AI in food analysis
+SH-2069,exclude,E5,high,review of neural-network inference on satellites
+SH-2070,exclude,E1,high,chaotic memristive network for image encryption
+SH-2072,exclude,E5,high,review of ML for satellite images
+SH-2073,exclude,E5,medium,book chapter overview
+SH-2075,exclude,E1,high,kNN + guided filter HSI classification
+SH-2077,exclude,E5,high,review of organic photodetectors
+SH-2078,exclude,E3,medium,bioinspired UV-NIR optoelectronic device
+SH-2080,exclude,E5,high,review of computational flow visualization
+SH-2083,maybe,,low,"""neuromorphic approach"" mango grading with hyperspectral imaging; check whether a spiking model is used"
+SH-2084,exclude,E1,high,transformer infrared target detection; neuromorphic only cited
+SH-2087,exclude,E3,medium,spectral CNN chip for in-sensor computing; not spiking
+SH-2088,exclude,E5,high,review of HPC architectures in remote sensing
+SH-2089,exclude,E5,high,review of edge-AI hardware for space
+SH-2091,exclude,E5,high,review of onboard AI processing
+SH-2092,exclude,E1,high,path planning and navigation
+SH-2096,exclude,E3,medium,tunable photodetector spectral kernel machine (Salinas demo); not spiking
+SH-2098,exclude,E3,medium,retinomorphic network laser; device study
+SH-2099,exclude,E1,high,miniature surveillance vehicle with GAN; not spiking
+SH-2101,exclude,E6,high,innovation foresight report
+SH-2103,exclude,E6,high,special-issue introduction
+SH-2105,exclude,E1,high,detect-before-launch technologies overview
+SH-2108,exclude,E5,high,review of event vision sensors
+SH-2109,maybe,,low,small-satellite design with hyperspectral imager and neuromorphic on-board processor; likely design-only (E4 risk)
+SH-2110,exclude,E1,high,agri-food supply-chain RL framework
+SH-2113,exclude,E3,medium,metasystem for optical image recognition; device study
+SH-2114,exclude,E3,medium,band-alignment heterostructure convolution device (Jasper Ridge demo); not spiking
+SH-2115,exclude,E5,high,review of nanoparticle infrared detectors
+SH-0367,maybe,,low,parallel SNN + ANN stream network; application domain not given in title; check whether hyperspectral data are used
+SH-0369,maybe,,low,SNN feature analysis of geographical (remote-sensing) images; check whether hyperspectral
+SH-0778,maybe,,low,spiking equilibrium CNN for spatial urban data; check whether remote-sensing data are hyperspectral
+SH-1045,maybe,,low,attention SNN for remote-sensing image super-resolution; check whether hyperspectral SR is included
+SH-1055,maybe,,low,dual-model SNN with knowledge distillation for remote-sensing image classification; check datasets for HSI
+SH-1070,maybe,,low,convolutional and spiking models for crop-yield forecasting; check whether hyperspectral imagery is an input
+SH-1077,maybe,,low,SNN with spectral feature fusion for terahertz defect detection; check whether THz data are imaging spectra (else E2)
+SH-1088,maybe,,low,brain-inspired SNN remote-sensing image detection; check whether hyperspectral
+SH-1090,maybe,,low,"spiking neural P systems for remote-sensing image classification; check data type and whether SN P systems meet I1"
+SH-1924,maybe,,low,neuromorphic architectures for remote-sensing computation; check for spiking-HSI experiments (else E5/E4)
+SH-1047,exclude,E2,medium,SNNs for on-board land-cover classification on multispectral imagery (EuroSAT); background-set candidate (closest non-HSI work)
+SH-0594,exclude,E2,high,Spike-driven Transformer architecture (natural images); background-set candidate B2
+SH-0708,exclude,E2,high,Spikeformer architecture (natural images); background-set candidate B2
+SH-0591,exclude,E2,high,searched fully spike-driven transformer (natural images); background-set candidate B2
+SH-0603,exclude,E2,high,hierarchical spike-driven transformer (natural images); background-set candidate B2
+SH-0747,exclude,E2,high,temporal-enhanced Spikformer (natural images); background-set candidate B2
+SH-1097,exclude,E2,high,local structure-aware self-attention for spiking transformers; background-set candidate B2
+SH-2016,exclude,E2,high,LIF-based Legendre memory unit as neuromorphic state-space model; background-set candidate B2 (spiking SSM)
+SH-1283,exclude,E5,high,comprehensive SNN survey; candidate reference survey for background set (B2) and snowballing
+SH-1287,exclude,E5,high,review of spike-based neuromorphic vision; candidate reference survey (B2) and snowballing
+SH-0976,exclude,E5,high,review of SNNs in image classification; candidate reference survey (B2) and snowballing
