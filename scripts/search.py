@@ -315,6 +315,29 @@ def ieee(query, args):
     return total, pages, rows, ";".join(body.get("ranges", []))
 
 
+def parse_springer(text, args):
+    """One SpringerLink results page -> (total hits, records, number of result items)."""
+    m = re.search(r"Showing [\d,]+-[\d,]+ of ([\d,]+) results", text)
+    total = int(m.group(1).replace(",", "")) if m else 0
+    items = text.split('data-test="search-result-item"')[1:]
+    rows = []
+    for it in items:
+        link = re.search(r'href="(/(?:article|chapter|book|referenceworkentry|protocol)/([^"]+))"', it)
+        year = first(r'data-test="published">[^<]*?(\d{4})', it)
+        if not year_ok(year, args):
+            continue
+        rows.append(record(
+            source_record_id=link.group(2) if link else "",
+            title=strip_tags(first(r'data-test="title">.*?<span>(.*?)</span>', it)),
+            authors=strip_tags(first(r'data-test="authors">(.*?)</span>', it)).replace(", ", ";"),
+            year=year, venue=strip_tags(first(r'data-test="parent"[^>]*>(.*?)</a>', it)),
+            work_type=strip_tags(first(r'class="c-meta__type">(.*?)</span>', it)),
+            doi=link.group(2) if link else "",
+            url="https://link.springer.com" + link.group(1) if link else "",
+            abstract=strip_tags(first(r'data-test="description">(.*?)</div>', it))))
+    return total, rows, len(items)
+
+
 def springer(query, args):
     pages, rows, page_no, total = [], [], 1, 0
     while True:
@@ -322,29 +345,44 @@ def springer(query, args):
                urllib.parse.urlencode({"new-search": "true", "query": query, "page": page_no}))
         text = fetch(url, {"User-Agent": BROWSER_UA}, as_json=False, pause=2).decode("utf-8")
         if "Client Challenge" in text or "search-result-item" not in text and "Showing" not in text:
-            raise SystemExit("SpringerLink served a bot challenge; nothing logged. Search it in a browser instead.")
+            raise SystemExit("SpringerLink served a bot challenge; nothing logged. Use scripts/browser_search.py.")
         pages.append(text)
-        m = re.search(r"Showing [\d,]+-[\d,]+ of ([\d,]+) results", text)
-        total = int(m.group(1).replace(",", "")) if m else 0
-        items = text.split('data-test="search-result-item"')[1:]
-        for it in items:
-            link = re.search(r'href="(/(?:article|chapter|book|referenceworkentry|protocol)/([^"]+))"', it)
-            year = first(r'data-test="published">[^<]*?(\d{4})', it)
-            if not year_ok(year, args):
-                continue
-            rows.append(record(
-                source_record_id=link.group(2) if link else "",
-                title=strip_tags(first(r'data-test="title">.*?<span>(.*?)</span>', it)),
-                authors=strip_tags(first(r'data-test="authors">(.*?)</span>', it)).replace(", ", ";"),
-                year=year, venue=strip_tags(first(r'data-test="parent"[^>]*>(.*?)</a>', it)),
-                work_type=strip_tags(first(r'class="c-meta__type">(.*?)</span>', it)),
-                doi=link.group(2) if link else "",
-                url="https://link.springer.com" + link.group(1) if link else "",
-                abstract=strip_tags(first(r'data-test="description">(.*?)</div>', it))))
-        if not items or page_no * 20 >= total or len(rows) >= args.top:
+        total, page_rows, n_items = parse_springer(text, args)
+        rows.extend(page_rows)
+        if not n_items or page_no * 20 >= total or len(rows) >= args.top:
             break
         page_no += 1
     return total, pages, rows, "client_year_filter" if (args.since or args.until) else ""
+
+
+def scholar_blocked(text):
+    """Return a note if Scholar served a CAPTCHA or rate-limit page instead of results."""
+    if "gs_captcha" in text or "unusual traffic" in text.lower():
+        return "CAPTCHA"
+    if "can&#39;t perform the operation now" in text or "can't perform the operation now" in text:
+        return "rate limit ('try again later')"
+    return ""
+
+
+def parse_scholar(text):
+    """One Google Scholar results page -> (hit count shown, records)."""
+    m = re.search(r"About ([\d,]+) results|([\d,]+) results?", text)
+    total = int((m.group(1) or m.group(2)).replace(",", "")) if m else 0
+    rows = []
+    for b in text.split('class="gs_ri"')[1:]:
+        h3 = first(r'(<h3 class="gs_rt".*?</h3>)', b)
+        link = first(r'<a [^>]*href="([^"]+)"', h3)
+        title = strip_tags(re.sub(r'<span class="gs_ct[a-z0-9]*".*?</span>', "", h3, flags=re.S))
+        # Scholar separates authors / venue, year / host with "\xa0- "; \s matches the nbsp.
+        parts = [p.strip() for p in re.split(r"\s+-\s+", strip_tags(first(r'<div class="gs_a">(.*?)</div>', b)))]
+        venue_year = parts[1] if len(parts) > 1 else ""
+        rows.append(record(
+            title=title, authors=parts[0].replace(", ", ";"),
+            year=first(r"((?:19|20)\d{2})", venue_year),
+            venue=re.sub(r",?\s*(19|20)\d{2}$", "", venue_year).strip(" ,"),
+            url=html.unescape(link), work_type="citation" if "[CITATION]" in h3 else "",
+            abstract=strip_tags(first(r'<div class="gs_rs">(.*?)</div>', b))))
+    return total, rows
 
 
 def scholar(query, args):
@@ -361,33 +399,18 @@ def scholar(query, args):
         except SystemExit as e:
             note = f"stopped at start={start}: {str(e)[:80]}"
             break
-        if "gs_captcha" in text or "unusual traffic" in text.lower():
-            note = f"PARTIAL: stopped by CAPTCHA at start={start}"
-            break
-        if "can&#39;t perform the operation now" in text or "can't perform the operation now" in text:
-            note = f"PARTIAL: Scholar rate limit ('try again later') at start={start}"
+        blocked = scholar_blocked(text)
+        if blocked:
+            note = f"PARTIAL: Scholar {blocked} at start={start}"
             break
         pages.append(text)
+        page_total, page_rows = parse_scholar(text)
         if start == 0:
-            m = re.search(r"About ([\d,]+) results|([\d,]+) results?", text)
-            total = int((m.group(1) or m.group(2)).replace(",", "")) if m else 0
-        blocks = text.split('class="gs_ri"')[1:]
-        for b in blocks:
-            h3 = first(r'(<h3 class="gs_rt".*?</h3>)', b)
-            link = first(r'<a [^>]*href="([^"]+)"', h3)
-            title = strip_tags(re.sub(r'<span class="gs_ct[a-z0-9]*".*?</span>', "", h3, flags=re.S))
-            # Scholar separates authors / venue, year / host with "\xa0- "; \s matches the nbsp.
-            parts = [p.strip() for p in re.split(r"\s+-\s+", strip_tags(first(r'<div class="gs_a">(.*?)</div>', b)))]
-            venue_year = parts[1] if len(parts) > 1 else ""
-            rows.append(record(
-                title=title, authors=parts[0].replace(", ", ";"),
-                year=first(r"((?:19|20)\d{2})", venue_year),
-                venue=re.sub(r",?\s*(19|20)\d{2}$", "", venue_year).strip(" ,"),
-                url=html.unescape(link), work_type="citation" if "[CITATION]" in h3 else "",
-                abstract=strip_tags(first(r'<div class="gs_rs">(.*?)</div>', b))))
+            total = page_total
+        rows.extend(page_rows)
         # Scholar pages often hold 9 results, so only an empty page or the hit count ends a query.
         start += 10
-        if not blocks or start >= total:
+        if not page_rows or start >= total:
             break
         time.sleep(random.uniform(8, 15))
     filters = ";".join(filter(None, [f"top{args.top}", "as_ylo/as_yhi" if (args.since or args.until) else "", note]))
@@ -417,15 +440,25 @@ def main():
     ap.add_argument("--note", default="")
     args = ap.parse_args()
 
-    today = dt.date.today().isoformat()
-    stem = f"{args.search_id}_{args.source}_{today}"
-    raw_path, csv_path = EXPORTS / f"{stem}.raw.json", EXPORTS / f"{stem}.csv"
-    if raw_path.exists() or csv_path.exists():
-        raise SystemExit(f"{stem} already exists; raw exports are never overwritten.")
-
+    check_new(args.search_id, args.source)
     total, pages, rows, filters = ADAPTERS[args.source](args.query, args)
-    rows = rows[:args.top]
+    save_export(args.search_id, args.source, args.query, total, pages, rows[:args.top], filters, args,
+                INTERFACE.get(args.source, "API"), FIELDS[args.source])
 
+
+def export_paths(search_id, source):
+    stem = f"{search_id}_{source}_{dt.date.today().isoformat()}"
+    return EXPORTS / f"{stem}.raw.json", EXPORTS / f"{stem}.csv"
+
+
+def check_new(search_id, source):
+    if any(p.exists() for p in export_paths(search_id, source)):
+        raise SystemExit(f"{search_id}_{source} already exists today; raw exports are never overwritten.")
+
+
+def save_export(search_id, source, query, total, pages, rows, filters, args, interface, fields):
+    """Write the raw pages and flat records, and append the search to search_log.csv."""
+    raw_path, csv_path = export_paths(search_id, source)
     EXPORTS.mkdir(parents=True, exist_ok=True)
     raw_path.write_text(json.dumps(pages, ensure_ascii=False), encoding="utf-8")
     with csv_path.open("w", newline="", encoding="utf-8") as f:
@@ -434,10 +467,10 @@ def main():
         writer.writerows(rows)
     with SEARCH_LOG.open("a", newline="", encoding="utf-8") as f:
         csv.writer(f).writerow([
-            args.search_id, today, args.source, INTERFACE.get(args.source, "API"), FIELDS[args.source], args.query,
+            search_id, dt.date.today().isoformat(), source, interface, fields, query,
             filters or "none", total, len(rows), csv_path.relative_to(ROOT).as_posix(),
             args.round, args.run_by, args.note])
-    print(f"{args.search_id} {args.source}: {total} hits, {len(rows)} exported -> {csv_path.relative_to(ROOT).as_posix()}")
+    print(f"{search_id} {source}: {total} hits, {len(rows)} exported -> {csv_path.relative_to(ROOT).as_posix()}")
 
 
 if __name__ == "__main__":

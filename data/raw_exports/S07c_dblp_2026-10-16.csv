@@ -1,0 +1,2 @@
+source_record_id,title,authors,year,venue,work_type,doi,url,abstract,keywords,cited_by_count
+journals/corr/abs-2107-11979,HYPER-SNN: Towards Energy-efficient Quantized Deep Spiking Neural Networks for Hyperspectral Image Classification,Gourav Datta;Souvik Kundu 0002;Akhilesh R. Jaiswal;Peter A. Beerel,2021,CoRR,Informal and Other Publications,10.48550/arxiv.2107.11979,https://doi.org/10.48550/arXiv.2107.11979,,,
