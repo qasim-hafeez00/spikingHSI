@@ -35,11 +35,14 @@ output/        generated files (master sheet, PRISMA counts, figures) — never 
 - [x] Main searches, scripted sources: OpenAlex, Semantic Scholar, arXiv, IEEE Xplore, Europe PMC, Crossref (+ Elsevier/Springer/ACM prefixes), DOAJ
 - [x] Google Scholar S06a3–d3: complete top-300 runs in R1's Chrome (amendment A3)
 - [x] Browser searches: ScienceDirect S05a/b, dblp S07a–c, SpringerLink S11, ACM S12 (amendment A3); Crossref publisher searches S13a–e (amendment A4)
-- [x] Deduplicated: 3,037 records → 2,115 unique papers; 34 fuzzy matches to confirm in deduplication_log.csv
+- [x] Deduplicated: 3,037 records → 2,115 unique papers
+- [x] AI-assisted pre-screening (amendment A5); R1 eligibility rulings on PCNN / SN P systems / EELS (amendment A6)
+- [x] Snowballing rounds 1–2 from the provisional seeds via OpenAlex (amendment A6): 1,885 records, saturated (no new candidate in round 2). Registry now 3,796 papers; 58 fuzzy matches to confirm in deduplication_log.csv
+- [ ] Scholar "Cited by" check for the 7 Scholar-only seeds not in OpenAlex (SH-0352, 1046, 1051, 1088, 1188, 1960, 2109)
 - [ ] Title/abstract screening: open `output/screening_TA_R1_primary.csv` in Excel, fill in decision / exclusion_code, then `python scripts/screening.py import output/screening_TA_R1_primary.csv`
 - [ ] Intra-rater re-screen after 14 days: `python scripts/screening.py sheet --round rescreen`
 - [ ] Full-text screening (library requests for PDFs)
-- [ ] Snowballing rounds until saturation
+- [ ] Snowballing from R1-confirmed includes after screening (repeat until no new include)
 - [ ] Extraction, results, quality appraisal
 - [ ] Update search before submission; synthesis and writing
 
@@ -55,7 +58,10 @@ python scripts/search.py openalex S01 "<string>" --round main --until 2026-10-31
 python scripts/import_export.py ieee S04 path\to\export.csv --query "<string>" --hits 57 --fields all_metadata --round main
 
 # merge + deduplicate into data/ (pilot runs: --round pilot --out output/pilot)
-python scripts/build_records.py --round main
+python scripts/build_records.py --round main,snowball
+
+# snowballing (OpenAlex; key in the gitignored .env file as OPENALEX_API_KEY=...)
+python scripts/snowball.py --round 3 --seeds auto
 
 # seed recall against any export or the registry
 python scripts/check_seed_recall.py data/master_registry.csv

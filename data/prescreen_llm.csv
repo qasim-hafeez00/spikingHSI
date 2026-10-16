@@ -32,7 +32,7 @@ SH-0056,exclude,E1,high,detector readout procedures for an imaging spectrometer;
 SH-0059,maybe,,medium,semantic labeling on spiking neuromorphic hardware (TrueNorth); check whether data are hyperspectral (E2 risk)
 SH-0065,maybe,,low,scoping study of neuromorphic hardware for hyperspectral sensing; check for empirical SNN-on-HSI evaluation (E4 risk)
 SH-0067,exclude,E1,high,"SNN = Siamese neural network, not spiking"
-SH-0068,maybe,,low,spiking VAE on EELS spectrum-imaging data (electron microscopy); borderline whether this counts as hyperspectral imaging
+SH-0068,exclude,E2,high,"spiking VAE on EELS spectrum imaging (electron microscopy); EELS is not hyperspectral imaging (R1 ruling, A6)"
 SH-0071,include,,medium,neuromorphic dual-stage Swin transformer for hyperspectral wetland classification; confirm spiking neurons
 SH-0074,exclude,E1,high,"SNN = subgraph neural network, not spiking"
 SH-0078,include,,high,spiking neural network for multimodal HSI/LiDAR/SAR classification
@@ -180,8 +180,8 @@ SH-1125,exclude,E6,high,thesis (DNN design for HSI + SNN simulation)
 SH-1126,exclude,E2,high,spiking transformer for aerial scene classification (RGB); hyperspectral as future work
 SH-1127,exclude,E9,high,duplicate record of SH-1089 (same paper with journal citation appended to the title)
 SH-1129,exclude,E1,medium,frequency fusion network for HSI-LiDAR classification; SNNs only in related work
-SH-1130,maybe,,medium,pulse-coupled neural network (PCNN) for hyperspectral sharpening; decide whether PCNN counts as a spiking model (I1)
-SH-1132,maybe,,low,spiking VAE for electron energy-loss spectrum imaging; borderline hyperspectral imaging (see SH-0068)
+SH-1130,exclude,E1,high,"pulse-coupled neural network (PCNN) for hyperspectral sharpening; PCNN is not a spiking model (R1 ruling, A6)"
+SH-1132,exclude,E2,high,"spiking VAE on EELS spectrum imaging; EELS is not hyperspectral imaging (R1 ruling, A6)"
 SH-1134,exclude,E2,high,input-current generation for spiking neuron model
 SH-1136,maybe,,medium,heterogeneous SNN-ANN fruit-quality framework; check whether hyperspectral data are an input
 SH-1140,maybe,,low,spiking neuron anomaly detection for multi-band bathymetry; probably multispectral (E2 risk)
@@ -343,8 +343,8 @@ SH-1045,maybe,,low,attention SNN for remote-sensing image super-resolution; chec
 SH-1055,maybe,,low,dual-model SNN with knowledge distillation for remote-sensing image classification; check datasets for HSI
 SH-1070,maybe,,low,convolutional and spiking models for crop-yield forecasting; check whether hyperspectral imagery is an input
 SH-1077,maybe,,low,SNN with spectral feature fusion for terahertz defect detection; check whether THz data are imaging spectra (else E2)
-SH-1088,maybe,,low,brain-inspired SNN remote-sensing image detection; check whether hyperspectral
-SH-1090,maybe,,low,"spiking neural P systems for remote-sensing image classification; check data type and whether SN P systems meet I1"
+SH-1088,exclude,E2,high,SNN (ANN-to-SNN conversion) object detection on SSDD (SAR) and RSOD (optical RGB) per the published abstract (SH-3784); not hyperspectral
+SH-1090,exclude,E1,high,"spiking neural P systems (membrane computing) for remote-sensing classification; SN P systems are not spiking neural networks (R1 ruling, A6)"
 SH-1924,maybe,,low,neuromorphic architectures for remote-sensing computation; check for spiking-HSI experiments (else E5/E4)
 SH-1047,exclude,E2,medium,SNNs for on-board land-cover classification on multispectral imagery (EuroSAT); background-set candidate (closest non-HSI work)
 SH-0594,exclude,E2,high,Spike-driven Transformer architecture (natural images); background-set candidate B2
@@ -357,3 +357,25 @@ SH-2016,exclude,E2,high,LIF-based Legendre memory unit as neuromorphic state-spa
 SH-1283,exclude,E5,high,comprehensive SNN survey; candidate reference survey for background set (B2) and snowballing
 SH-1287,exclude,E5,high,review of spike-based neuromorphic vision; candidate reference survey (B2) and snowballing
 SH-0976,exclude,E5,high,review of SNNs in image classification; candidate reference survey (B2) and snowballing
+SH-1200,exclude,E2,high,bio-inspired spiking olfactory model for electronic-nose sensor data; not hyperspectral imaging
+SH-1232,exclude,E1,high,brain-inspired cognitive computing framework for multimedia; no spiking model or HSI
+SH-1291,exclude,E1,high,mixture-of-experts transformer for event-camera tracking; no spiking model or HSI
+SH-1398,exclude,E1,high,hyperspectral laser-induced fluorescence standoff detection; no spiking model (LIF = laser-induced fluorescence)
+SH-1473,exclude,E1,high,YOLOv8 wheat spike counting from UAV multispectral imagery; wheat spikes not a spiking model
+SH-2184,exclude,E5,high,review of brain-inspired learning in ANNs; no HSI
+SH-2251,exclude,E3,high,8T SRAM in-memory dot-product engine; hardware without a spiking model on HSI
+SH-2561,exclude,E3,high,TrueNorth neurosynaptic chip design; hardware without HSI; background-set candidate (hardware)
+SH-3102,exclude,E3,medium,memristive devices for computing; device paper without a spiking model on HSI
+SH-3115,exclude,E3,high,oxide memristive switching kinetics; device physics without spiking model or HSI
+SH-3128,exclude,E3,high,radiation effects on TaOx memristive memories; device study without spiking model or HSI
+SH-3152,exclude,E5,high,review of memristor modeling; no spiking model on HSI
+SH-3375,exclude,E5,high,review of nano devices for reservoir computing; no spiking model on HSI
+SH-3433,exclude,E1,high,cloud and shadow masking in Landsat imagery (Fmask); no spiking model
+SH-3478,exclude,E2,medium,LCA sparse coding on TrueNorth neurosynaptic hardware; no hyperspectral data mentioned (check if unsure)
+SH-3525,exclude,E2,medium,event-based sensing for space situational awareness; event camera data not hyperspectral
+SH-3548,exclude,E1,high,in-memory computing for Bayesian binary neural networks; no spiking model or HSI
+SH-3021,maybe,,low,event-driven SNN for remote-sensing image classification (no abstract available); check whether datasets are hyperspectral
+SH-3228,maybe,,low,deep SNN with model fusion for remote-sensing image classification (no abstract available); check whether datasets are hyperspectral
+SH-3630,maybe,,low,ICCT-SNN for remote-sensing classification and detection (no abstract available); check whether datasets are hyperspectral
+SH-3784,exclude,E9,high,"duplicate of SH-1088 (published version with DOI; same title); SAR/optical datasets, not hyperspectral"
+SH-3713,exclude,E2,high,frame-to-event mapping for DVS event-driven vision; not hyperspectral

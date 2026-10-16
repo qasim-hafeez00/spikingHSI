@@ -53,6 +53,22 @@ Open eligibility questions raised by pre-screening (decide before full text):
 Reason: Reduce the screening workload (2,115 records) while keeping every decision with R1, with the method reported as an automation tool under PRISMA 2020 item 8.
 Effect on already-processed records: none screened yet.
 
+## A6 — 2026-10-16
+Section(s): §4.1 I1, I2; §7.5
+Change:
+1. **Eligibility rulings by R1** (answers to the A5 open questions). I1 is met only by spiking neural network models (spiking neurons such as LIF/IF/Izhikevich/SRM, spike-coded activity, ANN-to-SNN conversion, spiking transformers and similar). Pulse-coupled neural networks (PCNN), the spiking cortical model, and spiking neural P systems (membrane computing) do not meet I1 (E1). I2 is met only by hyperspectral imaging. Multispectral imagery, electron energy-loss spectrum imaging (EELS) and other spectrum-imaging modalities do not meet I2 (E2).
+2. **Snowballing started before screening.** Round 1 of backward and forward snowballing (§7.5) was run through OpenAlex (`scripts/snowball.py`, with an API key) from the provisional seed set = pre-screening include and maybe suggestions. It was not run from R1-confirmed includes. The snowball records are logged as searches B1 and F1 (round `snowball`) and pass through the same deduplication, pre-screening and R1 screening as the database records. Later rounds use R1-confirmed includes as seeds, and they stop when a round adds no new included paper.
+   Results:
+   - **Round 1:** 65 seeds, 58 resolved in OpenAlex. B1 found 1,494 references and F1 found 253 citing works, adding 1,593 new papers. Pre-screening found 3 new maybe candidates (SH-3021, SH-3228, SH-3630: SNNs for remote-sensing image classification with no abstract available) and no new likely include. SH-3784 is the published version of SH-1088. Its abstract shows SAR and RGB data, so both are suggested exclusions (E2; SH-3784 also E9).
+   - **Round 2:** seeds = the 3 new maybes. B2 found 103 records and F2 found 35, adding 88 new papers and no new candidate.
+   - **Saturation:** the provisional snowballing is saturated, and the registry now has 3,796 papers.
+   - **Seeds not in OpenAlex:** SH-0352, SH-1046, SH-1051, SH-1088, SH-1188, SH-1960 and SH-2109 are known only from Scholar. Their "Cited by" lists are to be checked in Google Scholar.
+   - **Validation:** the rule-validation sample (seed 20261016, n = 60) was redrawn from the enlarged pool and read in full. It again found 0/60 missed spiking-HSI papers.
+3. **Search saturation check.** OpenAlex title/abstract counts were run for term variants not in the frozen string (`"spike neural network(s)"`, `"pulse neural network"`, `"leaky integrate"`, and `spiking` combined with `"spectral image"`, Indian Pines, Pavia, Salinas or `"spectral-spatial"`). None returned an HSI record that was missing from the registry, so the database string was not changed.
+
+Reason: R1 decided the open eligibility questions. Snowballing from provisional seeds gets candidates into one screening pass instead of two. Missed seeds are covered by the later rounds from confirmed includes.
+Effect on already-processed records: none screened yet. SH-0068 and SH-1132 (EELS) are suggested E2; SH-1130 (PCNN) and SH-1090 (SN P systems) are suggested E1.
+
 ## Pre-freeze decisions (for the record)
 - 2026-10-16 — Conditional Phase 2 (spiking × broader remote sensing) dropped after the scoping search showed sufficient HSI volume (Protocol §5).
 - 2026-10-16 — No publication-year lower bound (scoping found no relevant work before 2018).

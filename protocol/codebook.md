@@ -131,7 +131,7 @@ If a paper proposes several distinct models, add one row per model with the same
 | hits | Count reported by the source |
 | exported | Number of records exported |
 | export_file | Path under `data/raw_exports/` |
-| round | `pilot`, `main`, `update` |
+| round | `pilot`, `main`, `snowball`, `update` |
 | run_by, notes | |
 
 ## snowball_log.csv — one row per (round × seed paper × direction)

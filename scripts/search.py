@@ -36,6 +36,12 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+# API keys live in the gitignored .env file (KEY=value lines); real environment variables win.
+if (ROOT / ".env").exists():
+    for _line in (ROOT / ".env").read_text(encoding="utf-8").splitlines():
+        if "=" in _line and not _line.lstrip().startswith("#"):
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
 EXPORTS = ROOT / "data" / "raw_exports"
 SEARCH_LOG = ROOT / "data" / "search_log.csv"
 EXPORT_COLUMNS = ["source_record_id", "title", "authors", "year", "venue", "work_type",
@@ -78,6 +84,32 @@ def record(**kw):
     return row
 
 
+OPENALEX_SELECT = ("id,doi,title,publication_year,type,primary_location,authorships,"
+                   "abstract_inverted_index,cited_by_count,keywords")
+
+
+def openalex_record(w):
+    """One OpenAlex work (fields OPENALEX_SELECT) as an export row."""
+    inv = w.get("abstract_inverted_index") or {}
+    abstract = " ".join(word for _, word in sorted((p, wd) for wd, ps in inv.items() for p in ps))
+    loc = w.get("primary_location") or {}
+    return record(
+        source_record_id=w["id"].rsplit("/", 1)[-1], title=w.get("title"),
+        authors=";".join(a["author"]["display_name"] for a in w.get("authorships") or []),
+        year=w.get("publication_year"), venue=(loc.get("source") or {}).get("display_name"),
+        work_type=w.get("type"), doi=w.get("doi"), url=loc.get("landing_page_url") or w["id"],
+        abstract=abstract, keywords=";".join(k["display_name"] for k in w.get("keywords") or []),
+        cited_by_count=w.get("cited_by_count"))
+
+
+def openalex_params(**params):
+    """Add the polite-pool mailto and the API key, when set."""
+    for env, key in (("OPENALEX_MAILTO", "mailto"), ("OPENALEX_API_KEY", "api_key")):
+        if os.environ.get(env):
+            params[key] = os.environ[env]
+    return params
+
+
 # --- source adapters: each returns (total_hits, raw_pages, records, filters_text) ---
 
 def openalex(query, args):
@@ -88,29 +120,14 @@ def openalex(query, args):
     if args.until:
         extra.append(f"to_publication_date:{args.until}")
     # Page paging needs no API key (cursor paging does) and reaches 10,000 results.
-    params = {"filter": ",".join(filters + extra), "per-page": 200, "page": 1,
-              "select": "id,doi,title,publication_year,type,primary_location,authorships,"
-                        "abstract_inverted_index,cited_by_count,keywords"}
-    if os.environ.get("OPENALEX_MAILTO"):
-        params["mailto"] = os.environ["OPENALEX_MAILTO"]
-    if os.environ.get("OPENALEX_API_KEY"):
-        params["api_key"] = os.environ["OPENALEX_API_KEY"]
+    params = openalex_params(filter=",".join(filters + extra), page=1, select=OPENALEX_SELECT,
+                             **{"per-page": 200})
     pages, rows, total = [], [], 0
     while True:
         page = fetch("https://api.openalex.org/works?" + urllib.parse.urlencode(params))
         pages.append(page)
         total = page["meta"]["count"]
-        for w in page["results"]:
-            inv = w.get("abstract_inverted_index") or {}
-            abstract = " ".join(word for _, word in sorted((p, wd) for wd, ps in inv.items() for p in ps))
-            loc = w.get("primary_location") or {}
-            rows.append(record(
-                source_record_id=w["id"].rsplit("/", 1)[-1], title=w.get("title"),
-                authors=";".join(a["author"]["display_name"] for a in w.get("authorships") or []),
-                year=w.get("publication_year"), venue=(loc.get("source") or {}).get("display_name"),
-                work_type=w.get("type"), doi=w.get("doi"), url=loc.get("landing_page_url") or w["id"],
-                abstract=abstract, keywords=";".join(k["display_name"] for k in w.get("keywords") or []),
-                cited_by_count=w.get("cited_by_count")))
+        rows += [openalex_record(w) for w in page["results"]]
         if not page["results"] or len(rows) >= total or len(rows) >= args.top:
             break
         if len(rows) >= 10_000:
